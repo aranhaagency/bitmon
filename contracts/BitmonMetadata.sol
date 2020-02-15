@@ -46,7 +46,7 @@ contract BitmonMetadata is BitmonIndexes, Seriality {
         offset -= sizeOfInt(8);
         intToBytes(offset, bitmon.stats.SD, buffer);
         offset -= sizeOfInt(8);
-        string memory serBitmon;
+        string memory serBitmon = new string (141);
         bytesToString(0, buffer, bytes(serBitmon));
         return serBitmon;
     }
