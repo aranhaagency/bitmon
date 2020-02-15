@@ -1,0 +1,31 @@
+{
+  "name": "bitmon-contract",
+  "version": "1.0.0",
+  "description": "Bitmon ERC721 contract",
+  "author": "Grupo Kindynos",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "2.5.0",
+    "@truffle/hdwallet-provider": "1.0.30",
+    "babel-polyfill": "6.26.0",
+    "babel-register": "6.26.0",
+    "dotenv": "8.2.0",
+    "truffle-export-abi": "1.0.1"
+  },
+  "devDependencies": {
+    "truffle": "5.1.12"
+  },
+  "scripts": {
+    "compile": "truffle compile",
+    "export": "yarn run compile && truffle-export-abi",
+    "deploy:ropsten": "truffle migrate --network ropsten",
+    "deploy:mainnet": "truffle migrate --network mainnet",
+    "console:ropsten": "truffle console --network ropsten",
+    "console:mainnet": "truffle console --network mainnet"
+  }
+}
