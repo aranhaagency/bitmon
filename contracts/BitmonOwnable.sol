@@ -8,7 +8,7 @@ contract BitmonOwnable is BitmonIndexes {
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
     // balanceOf the amount of ids owned by an address
-    function balanceOf(address _owner) public view returns (uint256) {
+    function balanceOf(address _owner) external view returns (uint256) {
         uint256[] memory ownerIDs = bitmonOwnerShipIndex[_owner];
         return ownerIDs.length;
     }
@@ -21,10 +21,7 @@ contract BitmonOwnable is BitmonIndexes {
     }
 
     // tokensOfOwner returns all the bitmons owned by an address
-    function tokensOfOwner(address owner) public view returns (uint256[] memory) {
+    function tokensOfOwner(address owner) external view returns (uint256[] memory) {
         return bitmonOwnerShipIndex[owner];
     }
-
-    function transfer(address _to, uint256 _tokenId) external;
-    function transferFrom(address _from, address _to, uint256 _tokenId) external;
 }

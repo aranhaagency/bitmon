@@ -3,12 +3,15 @@ pragma solidity ^0.5.0;
 import "@openzeppelin/contracts/GSN/Context.sol";
 import "./BitmonMetadata.sol";
 import "./utils/randomizer/Randomizer.sol";
+import "./BitmonOwnable.sol";
 
 // BitmonMinting contract has all the required information to generate Bitmons.
-contract BitmonMinting is Context, BitmonMetadata, Randomizer {
+contract BitmonMinting is Context, BitmonMetadata, Randomizer, BitmonOwnable {
 
     // Init the constructor and add the contract address as a minter
     constructor () internal {
+        Bitmon memory baseBitmon = createGen0Bitmon(0,0,0,0,0);
+        _addBitmonIndex(baseBitmon, 0, _msgSender());
         _addMinter(_msgSender());
     }
 
@@ -16,7 +19,6 @@ contract BitmonMinting is Context, BitmonMetadata, Randomizer {
     mapping (address => bool) private _minters;
 
     event MinterAdded(address indexed account);
-    event Transfer(address from, address to, uint256 tokenId);
 
     // Modifier for secure usage for functions that require minting privileges
     modifier onlyMinter() {
