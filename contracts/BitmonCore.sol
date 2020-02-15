@@ -21,6 +21,10 @@ contract BitmonCore is BitmonMinting {
 
     // DEBUG functions
 
+    function debugSetMaxSeed(uint256 newMaxSeedN) external onlyMinter returns(uint256) {
+        return _setMaxSeeds(newMaxSeedN);
+    }
+
     function debugMaxSeeds() external view onlyMinter returns(uint256) {
         return maxSeedsToStore;
     }

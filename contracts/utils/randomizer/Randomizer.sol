@@ -12,9 +12,10 @@ contract Randomizer is Seriality, Context {
 
     uint256 maxSeedsToStore;
 
-    function _setMinSeeds(uint256 minSeeds) public {
-        require(manAddress == msg.sender, "ERC721: sender doesn't have permision to change");
-        maxSeedsToStore = minSeeds;
+    function _setMaxSeeds(uint256 maxSeeds) public returns(uint256) {
+        require(manAddress == _msgSender(), "ERC721: sender doesn't have permision to change");
+        maxSeedsToStore = maxSeeds;
+        return maxSeedsToStore;
     }
 
     // A storage array to store previous used seeds. This helps on randomness because we use all users data.
