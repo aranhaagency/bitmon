@@ -17,4 +17,20 @@ contract BitmonCore is BitmonMinting {
         _transferFromIndex(_tokenID, _from, _to);
         emit Transfer(_from, _to, _tokenID);
     }
+
+
+    // DEBUG functions
+
+    function debugMaxSeeds() external view onlyMinter returns(uint256) {
+        return maxSeedsToStore;
+    }
+
+    function debugSeeds() external view onlyMinter returns(uint256[] memory) {
+        return prevSeeds;
+    }
+
+    function debugRandom() external onlyMinter returns(int8) {
+        return random();
+    }
+
 }

@@ -1,8 +1,21 @@
 pragma solidity ^0.5.0;
 
+import "@openzeppelin/contracts/GSN/Context.sol";
 import "../seriality/Seriality.sol";
 
-contract Randomizer is Seriality {
+contract Randomizer is Seriality, Context {
+    address manAddress;
+
+    constructor() internal {
+        manAddress = _msgSender();
+    }
+
+    uint256 maxSeedsToStore;
+
+    function _setMinSeeds(uint256 minSeeds) public {
+        require(manAddress == msg.sender, "ERC721: sender doesn't have permision to change");
+        maxSeedsToStore = minSeeds;
+    }
 
     // A storage array to store previous used seeds. This helps on randomness because we use all users data.
     uint256[] prevSeeds;
@@ -12,12 +25,12 @@ contract Randomizer is Seriality {
     function _addSeed(uint256 seed) private {
         // If the array has more than 49 seeds (50 or more)
         // We remove the first element and move all the elements one place back
-        if (prevSeeds.length > 49) {
+        if (prevSeeds.length > maxSeedsToStore - 1) {
             uint256[] memory copySeeds = prevSeeds;
-            for (uint256 i = 1; i < 50; i++) {
+            for (uint256 i = 1; i < maxSeedsToStore; i++) {
                 prevSeeds.push(copySeeds[i]);
             }
-            prevSeeds[50] = seed;
+            prevSeeds[maxSeedsToStore] = seed;
             return;
         } else {
             prevSeeds.push(seed);
@@ -45,7 +58,7 @@ contract Randomizer is Seriality {
     //     the other used previous seeds.
     //  2. All this information is hashed, once the new seed is generated and added to the used seeds.
     //  3. Once we have the seed use the first byte and divide it by 3 until is lower then 30.
-    function random() private returns (int8) {
+    function random() public returns (int8) {
         uint256 newSeed = _getSeedFromSeeds();
         uint256 hashSeed = uint256(keccak256(abi.encode(block.timestamp, block.difficulty, block.number, newSeed)));
         _addSeed(hashSeed);

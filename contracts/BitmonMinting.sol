@@ -36,17 +36,37 @@ contract BitmonMinting is Context, BitmonMetadata, Randomizer {
     }
 
     // Public function to call a mint
-    function mint(address to) public onlyMinter returns (bool) {
-        _mint(to);
+    function mint(address to, uint256 _bitmonID, int8 _gender, int8 _nature, int8 _specimen, int8 _variant) public onlyMinter returns (bool) {
+        _mint(to, _bitmonID, _gender, _nature, _specimen, _variant);
         return true;
     }
 
     // Internal function to mint
-    function _mint(address to) internal {
+    function _mint(address to, uint256 _bitmonID, int8 _gender, int8 _nature, int8 _specimen, int8 _variant) internal {
         require(to != address(0), "ERC721: mint to the zero address");
         uint256 tokenId = bitmonsCount + 1;
-        // TODO here we generate a new ADN and a Bitmon, add to indexes, address ownership and bitmons count
+        Bitmon memory bitmon = createGen0Bitmon(_bitmonID, _gender, _nature, _specimen, _variant);
+        _addBitmonIndex(bitmon, tokenId, to);
         emit Transfer(address(0), to, tokenId);
+    }
+
+    // Internal function to create a Gen0 Bitmon.
+    function createGen0Bitmon(uint256 _bitmonID, int8 _gender, int8 _nature, int8 _specimen, int8 _variant) internal returns (Bitmon memory) {
+        Stats memory bitmonStats = Stats(random(),random(),random(),random(),random());
+        Bitmon memory _bitmon = Bitmon({
+            bitmonID: _bitmonID,
+            fatherID: 0,
+            motherID: 0,
+            gender: _gender,
+            nature: _nature,
+            specimen: _specimen,
+            purity: 100,
+            birthHeight: block.number,
+            variant: _variant,
+            generation: 0,
+            stats: bitmonStats
+         });
+        return _bitmon;
     }
 
 }
