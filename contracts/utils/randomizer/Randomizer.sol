@@ -1,16 +1,15 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
-import "@openzeppelin/contracts/GSN/Context.sol";
 import "../seriality/Seriality.sol";
 
-contract Randomizer is Seriality, Context {
+contract Randomizer is Seriality {
 
     address manAddress;
     uint256 maxSeedsToStore;
 
     constructor() internal {
         maxSeedsToStore = 50;
-        manAddress = _msgSender();
+        manAddress = msg.sender;
         for (uint256 i = 1; i < maxSeedsToStore; i++) {
             prevSeeds.push(uint256(0));
         }
@@ -18,7 +17,7 @@ contract Randomizer is Seriality, Context {
 
 
     function _setMaxSeeds(uint256 maxSeeds) public returns(uint256) {
-        require(manAddress == _msgSender(), "ERC721: sender doesn't have permision to change");
+        require(manAddress == msg.sender, "ERC721: sender doesn't have permision to change");
         maxSeedsToStore = maxSeeds;
         return maxSeedsToStore;
     }

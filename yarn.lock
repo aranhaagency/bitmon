@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@openzeppelin/contracts@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-2.5.0.tgz#e327a98ba1d26b7756ff62885a0aa0967a375449"
-  integrity sha512-t3jm8FrhL9tkkJTofkznTqo/XXdHi21w5yXwalEnaMOp22ZwZ0f/mmKdlgMMLPFa6bSVHbY88mKESwJT/7m5Lg==
-
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
@@ -3900,10 +3895,10 @@ truffle-export-abi@1.0.1:
     minimist "^1.2.0"
     winston "^3.1.0"
 
-truffle@5.1.12:
-  version "5.1.12"
-  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.12.tgz#7d41fe2205b223e5631fcbe5c7faa09899b6ca38"
-  integrity sha512-lw5NC3S4esGqKIbqKXWutOcOMz3G+2LCKvacnrwH/PNh/Wk0qPKia7daiLJqRdqjJkHPtAUpRf8b1aqrcot2Ww==
+truffle@5.1.13:
+  version "5.1.13"
+  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.13.tgz#f0a071342616f23a52bceaedae4feaec0bc4d549"
+  integrity sha512-d+DKgNE389/WmSb68sDu/DnMpex18bx7edw4waSEESdynwTgocsPFumgWqzmmUTxjnaRAScPC7oA5X6ZVSKwLQ==
   dependencies:
     app-module-path "^2.2.0"
     mocha "5.2.0"
@@ -4227,9 +4222,9 @@ web3-net@1.2.1:
     web3-core-method "1.2.1"
     web3-utils "1.2.1"
 
-"web3-provider-engine@git+https://github.com/trufflesuite/provider-engine.git#web3-one":
+"web3-provider-engine@https://github.com/trufflesuite/provider-engine#web3-one":
   version "14.0.6"
-  resolved "git+https://github.com/trufflesuite/provider-engine.git#3538c60bc4836b73ccae1ac3f64c8fed8ef19c1a"
+  resolved "https://github.com/trufflesuite/provider-engine#3538c60bc4836b73ccae1ac3f64c8fed8ef19c1a"
   dependencies:
     async "^2.5.0"
     backoff "^2.5.0"

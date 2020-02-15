@@ -1,18 +1,17 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
-import "@openzeppelin/contracts/GSN/Context.sol";
 import "./BitmonMetadata.sol";
 import "./utils/randomizer/Randomizer.sol";
 import "./BitmonOwnable.sol";
 
 // BitmonMinting contract has all the required information to generate Bitmons.
-contract BitmonMinting is Context, BitmonMetadata, Randomizer, BitmonOwnable {
+contract BitmonMinting is BitmonMetadata, Randomizer, BitmonOwnable {
 
     // Init the constructor and add the contract address as a minter
     constructor () internal {
         Bitmon memory baseBitmon = createGen0Bitmon(0,0,0,0,0);
-        _addBitmonIndex(baseBitmon, 0, _msgSender());
-        _addMinter(_msgSender());
+        _addBitmonIndex(baseBitmon, 0, msg.sender);
+        _addMinter(msg.sender);
     }
 
     // The map for addresses and minting capabilities
@@ -22,7 +21,7 @@ contract BitmonMinting is Context, BitmonMetadata, Randomizer, BitmonOwnable {
 
     // Modifier for secure usage for functions that require minting privileges
     modifier onlyMinter() {
-        require(isMinter(_msgSender()), "MinterRole: caller does not have the Minter role");
+        require(isMinter(msg.sender), "MinterRole: caller does not have the Minter role");
         _;
     }
 

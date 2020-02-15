@@ -10,7 +10,6 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@openzeppelin/contracts": "2.5.0",
     "@truffle/hdwallet-provider": "1.0.30",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
@@ -18,7 +17,7 @@
     "truffle-export-abi": "1.0.1"
   },
   "devDependencies": {
-    "truffle": "5.1.12"
+    "truffle": "5.1.13"
   },
   "scripts": {
     "compile": "truffle compile",
