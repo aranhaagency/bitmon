@@ -2,7 +2,8 @@ pragma solidity ^0.5.0;
 
 import "./utils/seriality/Seriality.sol";
 
-contract BitmonBase is Seriality {
+
+contract BitmonBase is Seriality  {
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
@@ -10,11 +11,11 @@ contract BitmonBase is Seriality {
     // all the elements are numbers between 0 and 30.
     // Stats serialized size is 5 bytes.
     struct Stats  {
-        uint8 H;
-        uint8 A;
-        uint8 SA;
-        uint8 D;
-        uint8 SD;
+        int8 H;
+        int8 A;
+        int8 SA;
+        int8 D;
+        int8 SD;
     }
 
 
@@ -22,17 +23,17 @@ contract BitmonBase is Seriality {
     // This variables affect in-game experience and are used to fill the Breeding algorithm.
     // Bitmon serialized size 141 bytes.
     struct Bitmon {
-        uint256     bitmonID;       // Unique ID to identify this Bitmon
-        uint256     fatherID;       // Father unique ID to trace parent line
-        uint256     motherID;       // Mother unique ID to trace mother line
-        uint8       gender;         // Gender definition (female 1 or male 0)
-        uint8       nature;         // Characteristics of the behaviour (between 1 to 30)
-        uint16      specimen;       // Specie identifier
-        uint8       purity;         // Speciment purity (Between 0 and 100)
-        uint256     birthHeight;    // BlockHeight of the network at Bitmon born.
-        uint8       variant;        // Color variants
-        uint16      generation;     // Generation
-        Stats       stats;          // Stats are modifiers to the Bitmon main attributes.
+        uint256    bitmonID;       // Unique ID to identify this Bitmon
+        uint256    fatherID;       // Father unique ID to trace parent line
+        uint256    motherID;       // Mother unique ID to trace mother line
+        int8       gender;         // Gender definition (female 1 or male 0)
+        int8       nature;         // Characteristics of the behaviour (between 1 to 30)
+        int16      specimen;       // Specie identifier
+        int8       purity;         // Speciment purity (Between 0 and 100)
+        uint256    birthHeight;    // BlockHeight of the network at Bitmon born.
+        int8       variant;        // Color variants
+        int16      generation;     // Generation
+        Stats      stats;          // Stats are modifiers to the Bitmon main attributes.
     }
 
     // bitmonsCount is a uint256 number to make sure there are no duplicated bitmons ID's
@@ -73,29 +74,29 @@ contract BitmonBase is Seriality {
         offset -= 32;
         uintToBytes(offset, bitmon.motherID, buffer);
         offset -= 32;
-        uintToBytes(offset, bitmon.gender, buffer);
+        intToBytes(offset, bitmon.gender, buffer);
         offset -= 1;
-        uintToBytes(offset, bitmon.nature, buffer);
+        intToBytes(offset, bitmon.nature, buffer);
         offset -= 1;
-        uintToBytes(offset, bitmon.specimen, buffer);
+        intToBytes(offset, bitmon.specimen, buffer);
         offset -= 2;
-        uintToBytes(offset, bitmon.purity, buffer);
+        intToBytes(offset, bitmon.purity, buffer);
         offset -= 1;
         uintToBytes(offset, bitmon.birthHeight, buffer);
         offset -= 32;
-        uintToBytes(offset, bitmon.variant, buffer);
+        intToBytes(offset, bitmon.variant, buffer);
         offset -= 1;
-        uintToBytes(offset, bitmon.generation, buffer);
+        intToBytes(offset, bitmon.generation, buffer);
         offset -= 2;
-        uintToBytes(offset, bitmon.stats.H, buffer);
+        intToBytes(offset, bitmon.stats.H, buffer);
         offset -= 1;
-        uintToBytes(offset, bitmon.stats.A, buffer);
+        intToBytes(offset, bitmon.stats.A, buffer);
         offset -= 1;
-        uintToBytes(offset, bitmon.stats.SA, buffer);
+        intToBytes(offset, bitmon.stats.SA, buffer);
         offset -= 1;
-        uintToBytes(offset, bitmon.stats.D, buffer);
+        intToBytes(offset, bitmon.stats.D, buffer);
         offset -= 1;
-        uintToBytes(offset, bitmon.stats.SD, buffer);
+        intToBytes(offset, bitmon.stats.SD, buffer);
         offset -= 1;
         uint newOffset = 141;
         string memory serBitmon;
@@ -104,4 +105,31 @@ contract BitmonBase is Seriality {
     }
 
 
+    // Pseudorandom number generation to calculate the Bitmon ADN stats.
+    // This is pseudorandom because it can be theoretically calculated by the user by selecting
+    // a blockheigh a difficulty and block number hashing it and project which is the best block
+    // to breed a monster.
+
+    // Some considerations:
+    // - The user doesn't know the block that the transaction is going to be confirmed, that depends
+    //   on the miner.
+    // - The selected bytes for each stat is not deterministic, but based on father and mothers ADN.
+    // - Hashing helps to bring some randomness upon the byte selection.
+
+    // Explanation:
+    // Using block timestamp, difficulty and height we create a double keccak hash.
+    // Select a predefined byte based on father and mother stats.
+    // Convert that byte to a uint8 number and divide it by 3 until it is less
+    // or equal than 30.
+    function random(uint selectedByte) private view returns (int8) {
+        uint256 hashK = uint256(keccak256(abi.encode(block.timestamp, block.difficulty)));
+        uint256 doublek = uint256(keccak256(abi.encode(block.number, hashK)));
+        bytes memory buffer = new bytes(32);
+        assembly { mstore(add(buffer, 32), doublek) }
+        int8 randomN = bytesToInt8(selectedByte, buffer);
+        while (randomN > 30) {
+            randomN /= 3;
+        }
+        return randomN;
+    }
 }
