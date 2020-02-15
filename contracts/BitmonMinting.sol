@@ -1,9 +1,10 @@
 pragma solidity ^0.5.0;
 
 import "@openzeppelin/contracts/GSN/Context.sol";
-import "./BitmonBase.sol";
+import "./BitmonMetadata.sol";
+import "./utils/randomizer/Randomizer.sol";
 
-contract BitmonMinting is Context, BitmonBase {
+contract BitmonMinting is Context, BitmonMetadata, Randomizer {
 
     // Init the constructor and add the contract address as a minter
     constructor () internal {
