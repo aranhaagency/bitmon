@@ -5,6 +5,8 @@ import "./BitmonIndexes.sol";
 // BitmonOwnable contains information about Bitmon owners.
 contract BitmonOwnable is BitmonIndexes {
 
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+
     // balanceOf the amount of ids owned by an address
     function balanceOf(address _owner) public view returns (uint256) {
         uint256[] memory ownerIDs = bitmonOwnerShipIndex[_owner];

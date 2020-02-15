@@ -7,4 +7,14 @@ import "./BitmonMinting.sol";
 contract BitmonCore is BitmonMinting {
     string public constant name = "Bitmon TEST";
     string public constant symbol = "BMT";
+
+    function transfer(uint256 _tokenID, address _to) external  {
+        _transferIndex(_tokenID, _to);
+        emit Transfer(msg.sender, _to, _tokenID);
+    }
+
+    function transferFrom(uint256 _tokenID, address _from, address _to) external onlyMinter {
+        _transferFromIndex(_tokenID, _from, _to);
+        emit Transfer(_from, _to, _tokenID);
+    }
 }
