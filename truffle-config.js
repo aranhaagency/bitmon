@@ -7,13 +7,13 @@ module.exports = {
     networks: {
         mainnet: {
             provider: function() {
-                return new HDWalletProvider(process.env.KEY_MAIN, "https://mainnet.infura.io/v3/" + process.env.INFURA_SECRET)
+                return new HDWalletProvider(process.env.KEY_MAIN, "https://mainnet.infura.io/v3/" + process.env.INFURA_KEY)
             },
             network_id: 1
         },
         ropsten: {
             provider: function() {
-                return new HDWalletProvider(process.env.KEY_TEST, "https://ropsten.infura.io/v3/" + process.env.INFURA_SECRET)
+                return new HDWalletProvider(process.env.KEY_TEST, "https://ropsten.infura.io/v3/" + process.env.INFURA_KEY)
             },
             network_id: 3
         }
