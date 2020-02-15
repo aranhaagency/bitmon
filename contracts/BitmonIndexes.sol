@@ -23,16 +23,12 @@ contract BitmonIndexes is BitmonBase {
         return bitmonsCount;
     }
 
+    // TODO we need to make sure addition to the index doesn't collide with already generated mons
     function _addBitmonIndex(Bitmon memory bitmon, uint256 _tokenID, address _owner) internal {
         // Add a new bitmon to total supply
         bitmonsCount += bitmonsCount + 1;
-        // Make sure tokenID is not used on another Bitmon.
-        // This should never happens and should be handled internally.
-        require(bitmonMetaDataIndex[_tokenID].bitmonID != 0, "ERC721: token id already assigned to a Bitmon");
         // Add metadata to the index
         bitmonMetaDataIndex[_tokenID] = bitmon;
-        // Make sure this tokenID doesn't collide to an already owned bitmon.
-        require(bitmonIndexOwner[_tokenID] != address(0), "ERC721: token id already assigned to an owner");
         bitmonIndexOwner[_tokenID] = _owner;
         bitmonOwnerShipIndex[_owner].push(_tokenID);
     }

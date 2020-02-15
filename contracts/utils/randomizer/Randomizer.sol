@@ -4,13 +4,18 @@ import "@openzeppelin/contracts/GSN/Context.sol";
 import "../seriality/Seriality.sol";
 
 contract Randomizer is Seriality, Context {
+
     address manAddress;
+    uint256 maxSeedsToStore;
 
     constructor() internal {
+        maxSeedsToStore = 50;
         manAddress = _msgSender();
+        for (uint256 i = 1; i < maxSeedsToStore; i++) {
+            prevSeeds.push(uint256(0));
+        }
     }
 
-    uint256 maxSeedsToStore;
 
     function _setMaxSeeds(uint256 maxSeeds) public returns(uint256) {
         require(manAddress == _msgSender(), "ERC721: sender doesn't have permision to change");
