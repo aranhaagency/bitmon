@@ -8,6 +8,7 @@ contract BitmonMetadata is BitmonIndexes, Seriality {
     // tokenMetadata returns the ADN information for a specific bitmon
     function tokenMetadata(uint256 tokenID) public view returns (string memory) {
         Bitmon memory bitmon = bitmonMetaDataIndex[tokenID];
+        require(bitmon.bitmonID != 0, "ERC721: bitmon data doesn't exists");
         return _bitmonToString(bitmon);
     }
 

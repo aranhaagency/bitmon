@@ -33,4 +33,8 @@ contract BitmonCore is BitmonMinting {
         return random();
     }
 
+    function debugMetadata(uint256 tokenID) external view onlyMinter returns(string memory) {
+        return tokenMetadata(tokenID);
+    }
+
 }
