@@ -4,6 +4,7 @@ import "@openzeppelin/contracts/GSN/Context.sol";
 import "./BitmonMetadata.sol";
 import "./utils/randomizer/Randomizer.sol";
 
+// BitmonMinting contract has all the required information to generate Bitmons.
 contract BitmonMinting is Context, BitmonMetadata, Randomizer {
 
     // Init the constructor and add the contract address as a minter
@@ -15,6 +16,7 @@ contract BitmonMinting is Context, BitmonMetadata, Randomizer {
     mapping (address => bool) private _minters;
 
     event MinterAdded(address indexed account);
+    event Transfer(address from, address to, uint256 tokenId);
 
     // Modifier for secure usage for functions that require minting privileges
     modifier onlyMinter() {

@@ -1,5 +1,5 @@
-const BitmonContract = artifacts.require("BitmonContract");
+const BitmonCore = artifacts.require("BitmonCore");
 
 module.exports = function(deployer) {
-    deployer.deploy(BitmonContract);
+    deployer.deploy(BitmonCore);
 };

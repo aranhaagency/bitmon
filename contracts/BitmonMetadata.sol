@@ -1,8 +1,9 @@
 pragma solidity ^0.5.0;
 
-import "./BitmonBase.sol";
+import "./utils/seriality/Seriality.sol";
+import "./BitmonIndexes.sol";
 
-contract BitmonMetadata is BitmonBase, Seriality {
+contract BitmonMetadata is BitmonIndexes, Seriality {
 
     // tokenMetadata returns the ADN information for a specific bitmon
     function tokenMetadata(uint256 tokenID) public view returns (string memory) {
