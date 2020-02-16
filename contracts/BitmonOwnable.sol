@@ -9,8 +9,8 @@ contract BitmonOwnable is BitmonIndexes {
 
     // balanceOf the amount of ids owned by an address
     function balanceOf(address _owner) external view returns (uint256) {
-        uint256[] memory ownerIDs = bitmonOwnerShipIndex[_owner];
-        return ownerIDs.length;
+        require(_owner != address(0), "ERC721: owner query for zero account");
+        return bitmonOwnerCount[_owner];
     }
 
     // ownerOf returns the address owner of a tokenID
@@ -22,6 +22,14 @@ contract BitmonOwnable is BitmonIndexes {
 
     // tokensOfOwner returns all the bitmons owned by an address
     function tokensOfOwner(address owner) external view returns (uint256[] memory) {
+        require(_owner != address(0), "ERC721: owner query for zero account");
         return bitmonOwnerShipIndex[owner];
+    }
+
+    // transfer moves ownership from tokenID to a new address.
+    function transfer(uint256 _tokenID, address _to) external  {
+        require(bitmonIndexOwner[_tokenID] == msg.sender, "ERC721: the sender is not owner of the token");
+        _transferIndex(_tokenID, _to);
+        emit Transfer(msg.sender, _to, _tokenID);
     }
 }

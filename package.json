@@ -10,11 +10,12 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "@truffle/hdwallet-provider":  "1.0.31",
+    "@truffle/hdwallet-provider": "1.0.31",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
     "dotenv": "8.2.0",
-    "truffle-export-abi": "1.0.1"
+    "truffle-export-abi": "1.0.1",
+    "web3": "^1.2.6"
   },
   "devDependencies": {
     "truffle": "5.1.13"
@@ -22,9 +23,10 @@
   "scripts": {
     "compile": "truffle compile",
     "export": "yarn run compile && truffle-export-abi",
-    "deploy:ropsten": "truffle migrate --network ropsten",
+    "deploy:ganache": "truffle migrate --network ganache",
+    "test": "truffle test",
     "deploy:mainnet": "truffle migrate --network mainnet",
-    "console:ropsten": "truffle console --network ropsten",
+    "console:ganache": "truffle console --network ganache",
     "console:mainnet": "truffle console --network mainnet"
   }
 }

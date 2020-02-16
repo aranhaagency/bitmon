@@ -1,16 +1,14 @@
 pragma solidity ^0.6.0;
 
-import "./BitmonMetadata.sol";
 import "./utils/randomizer/Randomizer.sol";
 import "./BitmonOwnable.sol";
 
 // BitmonMinting contract has all the required information to generate Bitmons.
-contract BitmonMinting is BitmonMetadata, Randomizer, BitmonOwnable {
+contract BitmonMinting is Randomizer, BitmonOwnable {
 
-    // Init the constructor and add the contract address as a minter
+    // Add the contract account as minter and create the base bitmon.
     constructor () internal {
-        Bitmon memory baseBitmon = createGen0Bitmon(0,0,0,0,0);
-        _addBitmonIndex(baseBitmon, 0, msg.sender);
+        _mint(0, msg.sender, 0,0,0,0,0);
         _addMinter(msg.sender);
     }
 
@@ -18,6 +16,7 @@ contract BitmonMinting is BitmonMetadata, Randomizer, BitmonOwnable {
     mapping (address => bool) private _minters;
 
     event MinterAdded(address indexed account);
+    event MintedBitmon(address indexed account, uint256 indexed tokenID);
 
     // Modifier for secure usage for functions that require minting privileges
     modifier onlyMinter() {
@@ -37,27 +36,27 @@ contract BitmonMinting is BitmonMetadata, Randomizer, BitmonOwnable {
     }
 
     // Public function to call a mint
-    function mint(address to, uint256 _bitmonID, int8 _gender, int8 _nature, int8 _specimen, int8 _variant) public onlyMinter returns (bool) {
-        _mint(to, _bitmonID, _gender, _nature, _specimen, _variant);
+    function mint(address to, uint256 _bitmonID, uint8 _gender, uint8 _nature, uint8 _specimen, uint8 _variant) public onlyMinter returns (bool) {
+        uint256 tokenId = bitmons.length + 1;
+        _mint(tokenId, to, _bitmonID, _gender, _nature, _specimen, _variant);
         return true;
     }
 
     // Internal function to mint
-    function _mint(address to, uint256 _bitmonID, int8 _gender, int8 _nature, int8 _specimen, int8 _variant) internal {
-        require(to != address(0), "ERC721: mint to the zero address");
-        uint256 tokenId = bitmonsCount + 1;
+    function _mint(uint256 _tokenId, address _to, uint256 _bitmonID, uint8 _gender, uint8 _nature, uint8 _specimen, uint8 _variant) internal {
+        require(_to != address(0), "ERC721: mint to the zero address");
         Bitmon memory bitmon = createGen0Bitmon(_bitmonID, _gender, _nature, _specimen, _variant);
-        _addBitmonIndex(bitmon, tokenId, to);
-        emit Transfer(address(0), to, tokenId);
+        _addBitmonIndex(bitmon, _tokenId, _to);
+        emit Transfer(address(0), _to, _tokenId);
+
     }
 
     // Internal function to create a Gen0 Bitmon.
-    function createGen0Bitmon(uint256 _bitmonID, int8 _gender, int8 _nature, int8 _specimen, int8 _variant) internal returns (Bitmon memory) {
-        Stats memory bitmonStats = Stats(random(),random(),random(),random(),random());
+    function createGen0Bitmon(uint256 _bitmonID, uint8 _gender, uint8 _nature, uint8 _specimen, uint8 _variant) internal returns (Bitmon memory) {
         Bitmon memory _bitmon = Bitmon({
             bitmonID: _bitmonID,
-            fatherID: 0,
-            motherID: 0,
+            fatherID: uint256(0),
+            motherID: uint256(0),
             gender: _gender,
             nature: _nature,
             specimen: _specimen,
@@ -65,7 +64,11 @@ contract BitmonMinting is BitmonMetadata, Randomizer, BitmonOwnable {
             birthHeight: block.number,
             variant: _variant,
             generation: 0,
-            stats: bitmonStats
+            H: random(),
+            A: random(),
+            SA: random(),
+            D: random(),
+            SD: random()
          });
         return _bitmon;
     }

@@ -1,40 +1,41 @@
 pragma solidity ^0.6.0;
+pragma experimental ABIEncoderV2;
 
 import "./BitmonBase.sol";
-import "./BitmonMinting.sol";
 
 // BitmonIndexes contains information about Bitmon storage indexes with safe access functions
 contract BitmonIndexes is BitmonBase {
 
-    // bitmonsCount is a uint256 number to make sure there are no duplicated tokenID.
-    uint256 bitmonsCount;
-
     // This index is used to get the specific information of a Bitmon based on its tokenID.
-    mapping (uint256 => Bitmon) bitmonMetaDataIndex;
+    Bitmon[] _bitmons;
+
+    // This index is used to get the count of a Bitmon owned by an address;
+    mapping (address => uint256) _bitmonOwnerCount;
 
     // This index is used to get the specific ownership of a Bitmon using its tokenID
-    mapping (uint256 => address) bitmonIndexOwner;
+    mapping (uint256 => address) _bitmonIndexOwner;
 
     // This index is used to get all bitmons of a specific account.
-    mapping (address => uint256[]) bitmonOwnerShipIndex;
+    mapping (address => uint256[]) _bitmonOwnerShipIndex;
+
+    function _exists(uint256 tokenId) internal view returns (bool) {
+        address owner = bitmonIndexOwner[tokenId];
+        return owner != address(0);
+    }
 
     // totalSupply returns all the bitmons on the network
     function totalSupply() public view returns (uint256) {
-        return bitmonsCount;
+        return bitmons.length;
     }
 
-    // TODO we need to make sure addition to the index doesn't collide with already generated mons
     function _addBitmonIndex(Bitmon memory bitmon, uint256 _tokenID, address _owner) internal {
-        // Add a new bitmon to total supply
-        bitmonsCount += bitmonsCount + 1;
-        // Add metadata to the index
-        bitmonMetaDataIndex[_tokenID] = bitmon;
+        bitmonOwnerCount[_owner] += 1;
+        bitmons.push(bitmon);
         bitmonIndexOwner[_tokenID] = _owner;
-        bitmonOwnerShipIndex[_owner].push(_tokenID);
+        _addTokenToAddressIndex(_tokenID, _owner);
     }
 
     function _transferIndex(uint256 _tokenID, address _to) public {
-        require(bitmonIndexOwner[_tokenID] == msg.sender, "ERC721: the sender is not owner of the token");
         bitmonIndexOwner[_tokenID] = _to;
         _removeTokenFromAddressIndex(_tokenID, msg.sender);
         _addTokenToAddressIndex(_tokenID, _to);
@@ -59,4 +60,5 @@ contract BitmonIndexes is BitmonBase {
     function _addTokenToAddressIndex(uint256 _tokenID, address _owner) private {
         bitmonOwnerShipIndex[_owner].push(_tokenID);
     }
+
 }
