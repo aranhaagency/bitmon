@@ -37,7 +37,7 @@ contract BitmonMinting is Randomizer, BitmonOwnable {
 
     // mint is a public function to call a mint
     function mint(address to, uint256 _bitmonID, uint8 _gender, uint8 _nature, uint8 _specimen, uint8 _variant) public onlyMinter returns (bool) {
-        uint256 tokenId = bitmons.length + 1;
+        uint256 tokenId = _bitmons.length + 1;
         _mint(tokenId, to, _bitmonID, _gender, _nature, _specimen, _variant);
         return true;
     }
