@@ -6,43 +6,43 @@ import "./BitmonOwnable.sol";
 // BitmonMinting contract has all the required information to generate Bitmons.
 contract BitmonMinting is Randomizer, BitmonOwnable {
 
-    // Add the contract account as minter and create the base bitmon.
+    // constructor is a deploy called function to add a first bitmon and add the deployment address as minter
     constructor () internal {
         _mint(0, msg.sender, 0,0,0,0,0);
         _addMinter(msg.sender);
     }
 
-    // The map for addresses and minting capabilities
+    // _minters is a map of addresses capable of minting
     mapping (address => bool) private _minters;
 
     event MinterAdded(address indexed account);
     event MintedBitmon(address indexed account, uint256 indexed tokenID);
 
-    // Modifier for secure usage for functions that require minting privileges
+    // onlyMinter is a modifier for secure check against the index of addresses to see minting habilities.
     modifier onlyMinter() {
         require(isMinter(msg.sender), "MinterRole: caller does not have the Minter role");
         _;
     }
 
-    // Public function to check if an account is capable of minting
+    // isMinter checks if the user can mint
     function isMinter(address account) public view returns (bool) {
         return _minters[account];
     }
 
-    // Internal function to add a new minter address
+    // _addMinter is an internal function to add a new minter address
     function _addMinter(address account) internal {
         _minters[account] = true;
         emit MinterAdded(account);
     }
 
-    // Public function to call a mint
+    // mint is a public function to call a mint
     function mint(address to, uint256 _bitmonID, uint8 _gender, uint8 _nature, uint8 _specimen, uint8 _variant) public onlyMinter returns (bool) {
         uint256 tokenId = bitmons.length + 1;
         _mint(tokenId, to, _bitmonID, _gender, _nature, _specimen, _variant);
         return true;
     }
 
-    // Internal function to mint
+    // _mint is the internal function to mint
     function _mint(uint256 _tokenId, address _to, uint256 _bitmonID, uint8 _gender, uint8 _nature, uint8 _specimen, uint8 _variant) internal {
         require(_to != address(0), "ERC721: mint to the zero address");
         Bitmon memory bitmon = createGen0Bitmon(_bitmonID, _gender, _nature, _specimen, _variant);
@@ -51,7 +51,7 @@ contract BitmonMinting is Randomizer, BitmonOwnable {
 
     }
 
-    // Internal function to create a Gen0 Bitmon.
+    // createGen0Bitmon is a function to create a Gen0 Bitmon.
     function createGen0Bitmon(uint256 _bitmonID, uint8 _gender, uint8 _nature, uint8 _specimen, uint8 _variant) internal returns (Bitmon memory) {
         Bitmon memory _bitmon = Bitmon({
             bitmonID: _bitmonID,

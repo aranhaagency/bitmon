@@ -6,7 +6,6 @@ contract BitmonBase  {
 
     // The Bitmon struct is the ADN information defined at the born of a Bitmon.
     // This variables affect in-game experience and are used to fill the Breeding algorithm.
-    // Bitmon serialized size is 141 bytes.
     struct Bitmon {
         uint256    bitmonID;        // Unique ID to identify this Bitmon
         uint256    fatherID;        // Father unique ID to trace parent line
@@ -18,11 +17,11 @@ contract BitmonBase  {
         uint256    birthHeight;     // BlockHeight of the network at Bitmon born.
         uint8      variant;         // Color variants
         uint16     generation;      // Generation
-        uint8       H;              // Health
-        uint8       A;              // Attack
-        uint8       SA;             // Special attack
-        uint8       D;              // Defense
-        uint8       SD;             // Special defense
+        uint8      H;               // Health
+        uint8      A;               // Attack
+        uint8      SA;              // Special attack
+        uint8      D;               // Defense
+        uint8      SD;              // Special defense
     }
 
 }
