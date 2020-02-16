@@ -9,5 +9,4 @@ contract BitmonCore is BitmonMinting {
     string public constant name = "Bitmon TEST";
     string public constant symbol = "BMT";
 
-
 }

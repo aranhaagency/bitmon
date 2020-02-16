@@ -1,10 +1,26 @@
 pragma solidity ^0.6.0;
 
-import "./utils/randomizer/Randomizer.sol";
 import "./BitmonOwnable.sol";
 
 // BitmonMinting contract has all the required information to generate Bitmons.
-contract BitmonMinting is Randomizer, BitmonOwnable {
+contract BitmonMinting is BitmonOwnable {
+
+    address public randomContract;
+
+    function setRandomContractAddr(address _addr) external onlyMinter {
+        randomContract = _addr;
+    }
+
+    function getRandomUint8() internal returns (uint8) {
+        address randomizerContract = randomContract;
+        bool success = randomizerContract.call(abi.encodeWithSignature("randomUint8()"));
+        return 0;
+    }
+
+    function random() internal returns (uint8) {
+        require(randomContract != address(0), "ERC721: there is not random number contract address");
+        return getRandomUint8();
+    }
 
     // constructor is a deploy called function to add a first bitmon and add the deployment address as minter
     constructor () internal {
