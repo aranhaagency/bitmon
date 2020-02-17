@@ -8,21 +8,20 @@ contract("BitmonCore", async (accounts) => {
         assert.equal(minter, true);
     });
 
-    it("the first account should own 1 token", async () => {
+    it("the first account should own 0 token", async () => {
         let c = await Contract.deployed();
         let tokens = await c.balanceOf.call(accounts[0]);
-        assert.equal(tokens, "1");
+        assert.equal(tokens, "0");
     });
 
-    it("test transfer between accounts without privileges", async () => {
+    it("set random source contract", async () => {
         let c = await Contract.deployed();
-        await c.transfer.call("0", accounts[1]);
+        await c.setRandomContractAddr("0x6E57869E9cD5c4dB8f47534a961bbb7c1e23d3FC");
+    });
 
-        // Test index with transfer information
-        let balanceSend = await c.balanceOf(accounts[0]);
-        assert.equal(balanceSend, "0");
-        let balanceReceived = await c.balanceOf(accounts[1]);
-        assert.equal(balanceReceived, "1");
+    it("mint 1 bitmon to 0 address", async () => {
+        let c = await Contract.deployed();
+        await c.mintBitmon(accounts[0], 1,1,1,1,1);
     });
 
     it("other accounts should not contain tokens", async () => {
@@ -37,6 +36,17 @@ contract("BitmonCore", async (accounts) => {
         assert.equal(tokensFourth, "0");
         let tokensFifth = await c.balanceOf.call(accounts[5]);
         assert.equal(tokensFifth, "0");
+    });
+
+    it("test transfer between accounts without privileges", async () => {
+        let c = await Contract.deployed();
+        await c.transferFrom(accounts[0], accounts[1], 1);
+
+        // Test index with transfer information
+        let balanceSend = await c.balanceOf(accounts[0]);
+        assert.equal(balanceSend, "0");
+        let balanceReceived = await c.balanceOf(accounts[1]);
+        assert.equal(balanceReceived, "1");
     });
 
     it("all other accounts should be unable to mint", async () => {
@@ -58,6 +68,11 @@ contract("BitmonCore", async (accounts) => {
         let c = await Contract.deployed();
         let supply = await c.totalSupply.call();
         assert.equal(supply, "1");
+    });
+
+    it("get bitmon data", async () => {
+        let c = await Contract.deployed();
+        await c.bitmonData("1");
     });
 
 });

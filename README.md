@@ -23,8 +23,8 @@ The Bitmon contract is used to store on-chain data about Bitmon ADN and ownershi
 
 ## Transfer functions
 
-* `transfer():`
-* `transferFrom():`
+* `transfer():` transfers the ownership of a bitmon to another account without privileges.
+* `transferFrom():` transfers the ownership of a bitmon from one account to another with privileges.
 
 ## Events
 

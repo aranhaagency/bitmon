@@ -10,6 +10,7 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
+    "@openzeppelin/contracts": "2.5.0",
     "@truffle/hdwallet-provider": "1.0.31",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
