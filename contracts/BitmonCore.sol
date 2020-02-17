@@ -61,11 +61,11 @@ contract BitmonCore is BitmonBase, ERC721Enumerable, MinterRole {
             birthHeight: block.number,
             variant: _variant,
             generation: 0,
-            H: random(),
-            A: random(),
-            SA: random(),
-            D: random(),
-            SD: random()
+            h: random(),
+            a: random(),
+            sa: random(),
+            d: random(),
+            sd: random()
             });
         return _bitmon;
     }

@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
 // BitmonBase contains the base structs for a Bitmon
-contract BitmonBase  {
+contract BitmonBase {
 
     // The Bitmon struct is the ADN information defined at the born of a Bitmon.
     // This variables affect in-game experience and are used to fill the Breeding algorithm.
@@ -16,11 +16,11 @@ contract BitmonBase  {
         uint256    birthHeight;     // BlockHeight of the network at Bitmon born.
         uint8      variant;         // Color variants
         uint16     generation;      // Generation
-        uint8      H;               // Health
-        uint8      A;               // Attack
-        uint8      SA;              // Special attack
-        uint8      D;               // Defense
-        uint8      SD;              // Special defense
+        uint8      h;               // Health
+        uint8      a;               // Attack
+        uint8      sa;              // Special attack
+        uint8      d;               // Defense
+        uint8      sd;              // Special defense
     }
 
 }
